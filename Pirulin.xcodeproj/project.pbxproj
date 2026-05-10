@@ -6,17 +6,42 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BDB44AE12FB0CC04003687CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDB44ADE2FB0CC04003687CD /* Assets.xcassets */; };
+		BDB44AED2FB127DA003687CD /* DiaryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44AEC2FB127DA003687CD /* DiaryApp.swift */; };
+		BDB44B242FB12D89003687CD /* DiaryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B222FB12D89003687CD /* DiaryEntry.swift */; };
+		BDB44B252FB12D89003687CD /* Emotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B232FB12D89003687CD /* Emotion.swift */; };
+		BDB44B272FB12DA9003687CD /* DiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B262FB12DA9003687CD /* DiaryViewModel.swift */; };
+		BDB44B292FB12DBB003687CD /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B282FB12DBB003687CD /* MainTabView.swift */; };
+		BDB44B302FB12E0E003687CD /* WriteTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B2F2FB12E0E003687CD /* WriteTextView.swift */; };
+		BDB44B312FB12E0E003687CD /* AddImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B2B2FB12E0E003687CD /* AddImagesView.swift */; };
+		BDB44B322FB12E0E003687CD /* EmotionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B2C2FB12E0E003687CD /* EmotionPickerView.swift */; };
+		BDB44B332FB12E0E003687CD /* EntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B2D2FB12E0E003687CD /* EntryDetailView.swift */; };
+		BDB44B342FB12E0E003687CD /* NewEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B2E2FB12E0E003687CD /* NewEntryView.swift */; };
+		BDB44B372FB12E28003687CD /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B362FB12E28003687CD /* JournalListView.swift */; };
+		BDB44B3A2FB12E42003687CD /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B392FB12E42003687CD /* GalleryView.swift */; };
+		BDB44B3C2FB12E78003687CD /* DiaryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B3B2FB12E78003687CD /* DiaryStorage.swift */; };
+		BDB44B3E2FB12E81003687CD /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B3D2FB12E81003687CD /* ImageManager.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		BD86D55D2FAE556D007A8E39 /* Pirulin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pirulin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDB44ADE2FB0CC04003687CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BDB44AEC2FB127DA003687CD /* DiaryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryApp.swift; sourceTree = "<group>"; };
+		BDB44B222FB12D89003687CD /* DiaryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryEntry.swift; sourceTree = "<group>"; };
+		BDB44B232FB12D89003687CD /* Emotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emotion.swift; sourceTree = "<group>"; };
+		BDB44B262FB12DA9003687CD /* DiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryViewModel.swift; sourceTree = "<group>"; };
+		BDB44B282FB12DBB003687CD /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		BDB44B2B2FB12E0E003687CD /* AddImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImagesView.swift; sourceTree = "<group>"; };
+		BDB44B2C2FB12E0E003687CD /* EmotionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionPickerView.swift; sourceTree = "<group>"; };
+		BDB44B2D2FB12E0E003687CD /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
+		BDB44B2E2FB12E0E003687CD /* NewEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEntryView.swift; sourceTree = "<group>"; };
+		BDB44B2F2FB12E0E003687CD /* WriteTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteTextView.swift; sourceTree = "<group>"; };
+		BDB44B362FB12E28003687CD /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
+		BDB44B392FB12E42003687CD /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
+		BDB44B3B2FB12E78003687CD /* DiaryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryStorage.swift; sourceTree = "<group>"; };
+		BDB44B3D2FB12E81003687CD /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		BD86D55F2FAE556D007A8E39 /* Pirulin */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Pirulin;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		BD86D55A2FAE556D007A8E39 /* Frameworks */ = {
@@ -32,7 +57,13 @@
 		BD86D5542FAE556D007A8E39 = {
 			isa = PBXGroup;
 			children = (
-				BD86D55F2FAE556D007A8E39 /* Pirulin */,
+				BDB44B212FB12D5E003687CD /* Utilities */,
+				BDB44B202FB12D51003687CD /* Storage */,
+				BDB44B1F2FB12D49003687CD /* Views */,
+				BDB44B1E2FB12D38003687CD /* ViewModels */,
+				BDB44B1D2FB12CBD003687CD /* Models */,
+				BDB44ADE2FB0CC04003687CD /* Assets.xcassets */,
+				BDB44AEC2FB127DA003687CD /* DiaryApp.swift */,
 				BD86D55E2FAE556D007A8E39 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +74,78 @@
 				BD86D55D2FAE556D007A8E39 /* Pirulin.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BDB44B1D2FB12CBD003687CD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BDB44B222FB12D89003687CD /* DiaryEntry.swift */,
+				BDB44B232FB12D89003687CD /* Emotion.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BDB44B1E2FB12D38003687CD /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				BDB44B262FB12DA9003687CD /* DiaryViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		BDB44B1F2FB12D49003687CD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BDB44B382FB12E30003687CD /* Gallery */,
+				BDB44B352FB12E11003687CD /* Journal */,
+				BDB44B2A2FB12DD0003687CD /* Diary */,
+				BDB44B282FB12DBB003687CD /* MainTabView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BDB44B202FB12D51003687CD /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				BDB44B3B2FB12E78003687CD /* DiaryStorage.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		BDB44B212FB12D5E003687CD /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				BDB44B3D2FB12E81003687CD /* ImageManager.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		BDB44B2A2FB12DD0003687CD /* Diary */ = {
+			isa = PBXGroup;
+			children = (
+				BDB44B2B2FB12E0E003687CD /* AddImagesView.swift */,
+				BDB44B2C2FB12E0E003687CD /* EmotionPickerView.swift */,
+				BDB44B2D2FB12E0E003687CD /* EntryDetailView.swift */,
+				BDB44B2E2FB12E0E003687CD /* NewEntryView.swift */,
+				BDB44B2F2FB12E0E003687CD /* WriteTextView.swift */,
+			);
+			path = Diary;
+			sourceTree = "<group>";
+		};
+		BDB44B352FB12E11003687CD /* Journal */ = {
+			isa = PBXGroup;
+			children = (
+				BDB44B362FB12E28003687CD /* JournalListView.swift */,
+			);
+			path = Journal;
+			sourceTree = "<group>";
+		};
+		BDB44B382FB12E30003687CD /* Gallery */ = {
+			isa = PBXGroup;
+			children = (
+				BDB44B392FB12E42003687CD /* GalleryView.swift */,
+			);
+			path = Gallery;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -59,9 +162,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				BD86D55F2FAE556D007A8E39 /* Pirulin */,
 			);
 			name = Pirulin;
 			packageProductDependencies = (
@@ -109,6 +209,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDB44AE12FB0CC04003687CD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +220,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDB44B272FB12DA9003687CD /* DiaryViewModel.swift in Sources */,
+				BDB44AED2FB127DA003687CD /* DiaryApp.swift in Sources */,
+				BDB44B242FB12D89003687CD /* DiaryEntry.swift in Sources */,
+				BDB44B252FB12D89003687CD /* Emotion.swift in Sources */,
+				BDB44B292FB12DBB003687CD /* MainTabView.swift in Sources */,
+				BDB44B3C2FB12E78003687CD /* DiaryStorage.swift in Sources */,
+				BDB44B302FB12E0E003687CD /* WriteTextView.swift in Sources */,
+				BDB44B372FB12E28003687CD /* JournalListView.swift in Sources */,
+				BDB44B3A2FB12E42003687CD /* GalleryView.swift in Sources */,
+				BDB44B3E2FB12E81003687CD /* ImageManager.swift in Sources */,
+				BDB44B312FB12E0E003687CD /* AddImagesView.swift in Sources */,
+				BDB44B322FB12E0E003687CD /* EmotionPickerView.swift in Sources */,
+				BDB44B332FB12E0E003687CD /* EntryDetailView.swift in Sources */,
+				BDB44B342FB12E0E003687CD /* NewEntryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +361,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RM85R68T55;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -288,6 +404,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RM85R68T55;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
