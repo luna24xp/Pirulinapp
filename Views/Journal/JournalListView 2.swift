@@ -18,7 +18,10 @@ import SwiftUI
 
 struct JournalListView: View {
 
-    @EnvironmentObject var diaryViewModel: DiaryViewModel
+    @EnvironmentObject var diaryViewModel:  DiaryViewModel
+    // GoalsViewModel se inyecta desde DiaryApp.swift como environmentObject.
+    // Permite que esta vista y GoalsSectionView compartan el mismo estado.
+    @EnvironmentObject var goalsViewModel: GoalsViewModel
 
     // Controla si el sheet de nueva entrada está visible
     @State private var showingNewEntry: Bool = false
@@ -88,6 +91,31 @@ struct JournalListView: View {
                 .onDelete(perform: deleteEntries)
             } header: {
                 Text("Entradas del diario")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+
+            // ── Sección de metas ─────────────────────────────
+            // Recuadro de metas visible al final de la lista.
+            //
+            // EXTENSIBILIDAD:
+            // - Para ocultar el recuadro hasta que haya al menos 1 entrada,
+            //   envuelve este Section en: if !diaryViewModel.entries.isEmpty
+            // - Para mover metas a su propia pestaña, elimina este Section
+            //   y agrégalo en MainTabView.swift.
+            Section {
+                GoalsSectionView()
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+            } header: {
+                // ╔══════════════════════════════════════════════╗
+                // ║  PLACEHOLDER TÍTULO SECCIÓN METAS           ║
+                // ║  Cambia el texto para renombrar el header.  ║
+                // ╚══════════════════════════════════════════════╝
+                Text("Mi progreso")               // ← EDITAR título del grupo
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
