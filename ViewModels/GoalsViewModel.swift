@@ -1,24 +1,6 @@
 // ============================================================
 // ViewModels/GoalsViewModel.swift
-// Ruta: DiaryApp/ViewModels/GoalsViewModel.swift
-//
-// ViewModel de metas. Contiene toda la lógica de negocio:
-//   • Inicializar metas de Fase 1 en el primer arranque
-//   • Marcar / desmarcar metas como completadas
-//   • Detectar cuando se completan las 5 activas y avanzar de fase
-//   • Construir el conjunto de 5 metas para cada nueva fase
-//     (3 predefinidas + 2 slots rellenos automáticamente o por usuario)
-//   • Permitir que el usuario reemplace un slot con una meta propia
-//   • Persistir todo en GoalStorage
-//
-// EXTENSIBILIDAD:
-// - Para agregar notificaciones de "¡Completaste una fase!",
-//   usa UNUserNotificationCenter en `advanceToNextPhase()`.
-// - Para conectar metas con el DiaryViewModel (ej. "esta meta
-//   se activa cuando escribes X veces"), agrega una referencia
-//   @Published a DiaryViewModel y observa sus cambios aquí.
-// - Para agregar logros/badges, crea un array `unlockedBadges`
-//   y actualízalo en `checkPhaseCompletion()`.
+// Motor de análisis semanal y asignación de metas.
 // ============================================================
 
 import SwiftUI
@@ -26,315 +8,206 @@ import Combine
 
 class GoalsViewModel: ObservableObject {
 
-    // ============================================================
-    // MARK: - Estado publicado (la UI reacciona a estos cambios)
-    // ============================================================
-
-    /// Las 5 metas actualmente activas.
-    /// La UI observa este arreglo: cualquier cambio dispara un redibujado.
     @Published var activeGoals: [Goal] = []
-
-    /// Fase en la que está el usuario actualmente (comienza en 1).
-    @Published var currentPhase: Int = 1
-
-    /// true cuando todas las metas activas están completadas y la
-    /// app está construyendo la nueva fase. Sirve para mostrar un
-    /// loader o mensaje de "¡Fase completada!" en la UI.
-    @Published var isTransitioningPhase: Bool = false
-
-    // ============================================================
-    // MARK: - Constantes configurables
-    // ============================================================
-
-    /// Número de metas activas en todo momento.
-    /// EXTENSIBILIDAD: Cambia este valor si quieres más de 5 metas.
-    /// Asegúrate de ajustar GoalSets.initialGoals al mismo número.
-    private let goalsPerPhase: Int = 5
-
-    /// Número de metas predefinidas que el sistema da en Fase 2+.
-    /// El resto (goalsPerPhase - predefinedInPhase2) son slots personalizables.
-    private let predefinedInPhase2: Int = 3
-
-    /// Número de slots personalizables en Fase 2+ (goalsPerPhase - predefinedInPhase2).
-    /// Este valor se calcula, no se edita directamente.
-    private var customSlotsInPhase2: Int { goalsPerPhase - predefinedInPhase2 }
-
-    // ============================================================
-    // MARK: - Inicializador
-    // ============================================================
-
+    
+    // Variables para la lógica semanal
+    private var usedGoalTitles: [String] = []
+    private var lastGeneratedWeekStart: Date?
+    
     init() {
-        // Validación en debug: verifica que GoalSets tiene el número correcto.
-        // Si esta aserción falla, el developer sabe qué archivo corregir.
-        assert(
-            GoalSets.initialGoals.count == goalsPerPhase,
-            "⚠️ GoalSets.initialGoals debe tener exactamente \(goalsPerPhase) elementos."
-        )
-        assert(
-            GoalSets.phase2Goals.count == predefinedInPhase2,
-            "⚠️ GoalSets.phase2Goals debe tener exactamente \(predefinedInPhase2) elementos."
-        )
-        assert(
-            GoalSets.fillerGoals.count >= customSlotsInPhase2,
-            "⚠️ GoalSets.fillerGoals debe tener al menos \(customSlotsInPhase2) elementos."
-        )
-
         loadState()
     }
 
-    // ============================================================
-    // MARK: - Carga inicial
-    // ============================================================
-
-    /// Carga el estado desde disco o inicializa Fase 1 si es el primer arranque.
     private func loadState() {
-        currentPhase = GoalStorage.shared.loadCurrentPhase()
-        let saved    = GoalStorage.shared.loadActiveGoals()
-
-        if saved.isEmpty {
-            // Primera vez: construir y guardar las 5 metas iniciales.
-            buildGoals(forPhase: 1)
-        } else {
-            // Sesiones posteriores: restaurar el estado guardado.
-            activeGoals = saved
+        activeGoals = GoalStorage.shared.loadActiveGoals()
+        if let meta = GoalStorage.shared.loadMetadata() {
+            lastGeneratedWeekStart = meta.lastGeneratedWeekStart
+            usedGoalTitles = meta.usedGoalTitles
         }
     }
 
     // ============================================================
-    // MARK: - Construir metas para una fase
+    // MARK: - LÓGICA PRINCIPAL: CHECK SEMANAL
+    // Se llama desde la vista principal para comprobar si es lunes.
     // ============================================================
-
-    /// Construye el arreglo de 5 metas activas para la fase indicada.
-    /// Esta función es el corazón del módulo de fases.
-    ///
-    /// - Parameter phase: Número de fase (1-based).
-    ///
-    /// EXTENSIBILIDAD: Para agregar Fase 3, agrega `case 3:` aquí
-    /// siguiendo exactamente el mismo patrón del `case 2:`.
-    private func buildGoals(forPhase phase: Int) {
-        currentPhase = phase
-        var goals: [Goal] = []
-
-        switch phase {
-
-        // ── FASE 1: 5 metas predefinidas fijas ──────────────────
-        // Todas vienen de GoalSets.initialGoals.
-        // Ninguna es personalizable.
-        case 1:
-            goals = GoalSets.initialGoals.enumerated().map { (index, def) in
-                Goal(
-                    phase:        1,
-                    displayOrder: index,
-                    title:        def.title,
-                    description:  def.description,
-                    goalType:     .predefined,
-                    isCustomizable: false  // Las de Fase 1 nunca son reemplazables
-                )
-            }
-
-        // ── FASE 2 (y fases ≥ 2): 3 predefinidas + 2 slots ─────
-        // Primero se agregan las predefinidas de esta fase,
-        // luego se añaden fillers en los slots restantes.
-        // Los fillers son customizables (el usuario puede reemplazarlos).
-        default:
-            // Paso 1: Obtener las 3 metas predefinidas de la fase.
-            // Para fases > 2 sin datos específicos, reutiliza phase2Goals
-            // como respaldo (patrón extensible: agrega GoalSets.phase3Goals
-            // en GoalSets.swift y un `case 3:` aquí para diferenciarlas).
-            let predefined = (phase == 2)
-                ? GoalSets.phase2Goals
-                : GoalSets.phase2Goals  // ← Reemplaza por GoalSets.phase3Goals cuando exista
-
-            // Convierte definiciones de texto en objetos Goal completos
-            for (index, def) in predefined.enumerated() {
-                let goal = Goal(
-                    phase:          phase,
-                    displayOrder:   index,
-                    title:          def.title,
-                    description:    def.description,
-                    goalType:       .predefined,
-                    isCustomizable: false  // Las predefinidas de cada fase no son reemplazables
-                )
-                goals.append(goal)
-            }
-
-            // Paso 2: Llenar los slots restantes con metas de relleno.
-            // customSlotsInPhase2 = 2 por defecto.
-            // Se toman del pool GoalSets.fillerGoals en orden.
-            let slotsNeeded = goalsPerPhase - predefined.count
-
-            // Elige qué fillers usar para esta fase específica.
-            // En fases futuras podrías rotar o usar índices distintos.
-            let fillerPool  = GoalSets.fillerGoals
-            let fillers     = Array(fillerPool.prefix(slotsNeeded))
-
-            for (slotIndex, def) in fillers.enumerated() {
-                let goal = Goal(
-                    phase:          phase,
-                    displayOrder:   predefined.count + slotIndex,
-                    title:          def.title,
-                    description:    def.description,
-                    goalType:       .filler,
-                    isCustomizable: true  // ← El usuario PUEDE reemplazar estos
-                )
-                goals.append(goal)
+    
+    func checkWeeklyRefresh(diaryEntries: [DiaryEntry]) {
+        // 1. Calcular el lunes de la semana actual
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2 // Lunes
+        
+        let now = Date()
+        guard let currentWeekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now)) else { return }
+        
+        // 2. Si ya estamos en la misma semana, no hacemos nada.
+        if let last = lastGeneratedWeekStart, calendar.isDate(last, inSameDayAs: currentWeekStart) {
+            // Si el usuario borró sus metas (array vacío por error), forzamos generación.
+            if !activeGoals.isEmpty { return }
+        }
+        
+        // 3. Es una NUEVA SEMANA. Generar nuevas metas.
+        generateWeeklyGoals(weekStart: currentWeekStart, diaryEntries: diaryEntries)
+    }
+    
+    // ============================================================
+    // MARK: - GENERADOR DINÁMICO DE METAS
+    // ============================================================
+    
+    private func generateWeeklyGoals(weekStart: Date, diaryEntries: [DiaryEntry]) {
+        // A. Cuales fueron las metas no completadas? Se quedan.
+        var newGoalsList = activeGoals.filter { !$0.isCompleted }
+        
+        // B. Calcular cuántos espacios hay disponibles
+        let slotsToFill = 5 - newGoalsList.count
+        guard slotsToFill > 0 else {
+            saveMetadata(weekStart: weekStart) // No hay espacio, actualiza fecha y sale
+            return
+        }
+        
+        // C. Analizar emociones de la semana anterior
+        let topGroups = analyzeLastWeekEmotions(entries: diaryEntries, currentWeekStart: weekStart)
+        
+        // D. Llenar los espacios vacíos con metas de esos grupos
+        var neededPredefined = 0
+        var neededFillers = 0
+        
+        // Por regla, siempre intentamos mantener 3 predefinidas y 2 fillers en total.
+        let currentPredefined = newGoalsList.filter { $0.goalType == .predefined }.count
+        let currentFillers = newGoalsList.filter { $0.goalType == .filler || $0.goalType == .custom }.count
+        
+        neededPredefined = max(0, 3 - currentPredefined)
+        neededFillers = max(0, 2 - currentFillers)
+        
+        // Asignar nuevas predefinidas
+        for i in 0..<neededPredefined {
+            // Rotar a través de los grupos top
+            let groupToPick = topGroups[i % topGroups.count]
+            if let goalDef = pickUnusedGoal(from: groupToPick) {
+                newGoalsList.append(createGoal(def: goalDef, type: .predefined, isCustomizable: false, order: newGoalsList.count))
             }
         }
-
-        // Asignar y persistir las nuevas metas
-        activeGoals = goals
-        saveState()
-    }
-
-    // ============================================================
-    // MARK: - Completar / descompletar metas
-    // ============================================================
-
-    /// Alterna el estado de completado de una meta.
-    /// Si al completarla todas las demás también están completas,
-    /// inicia la transición a la siguiente fase.
-    ///
-    /// - Parameter goal: La meta que el usuario tocó (checkbox).
-    func toggleGoalCompletion(_ goal: Goal) {
-        // Busca el índice de la meta en el arreglo activo
-        guard let idx = activeGoals.firstIndex(where: { $0.id == goal.id })
-        else { return }
-
-        // Alterna el estado
-        activeGoals[idx].isCompleted.toggle()
-
-        if activeGoals[idx].isCompleted {
-            // Meta completada: registra la fecha
-            activeGoals[idx].completedDate = Date()
-        } else {
-            // Meta descompletada: borra la fecha
-            activeGoals[idx].completedDate = nil
+        
+        // Asignar nuevas fillers (personalizables) basadas en el top 2
+        let fillerGroups = Array(topGroups.prefix(2))
+        for i in 0..<neededFillers {
+            let groupToPick = fillerGroups[i % fillerGroups.count]
+            if let goalDef = pickUnusedGoal(from: groupToPick) {
+                newGoalsList.append(createGoal(def: goalDef, type: .filler, isCustomizable: true, order: newGoalsList.count))
+            }
         }
-
-        saveState()
-
-        // Verifica si todas las metas activas están completadas
-        checkPhaseCompletion()
+        
+        // Aplicar y guardar
+        self.activeGoals = newGoalsList
+        saveMetadata(weekStart: weekStart)
+        GoalStorage.shared.saveActiveGoals(self.activeGoals)
     }
-
+    
     // ============================================================
-    // MARK: - Detección y avance de fase
+    // MARK: - ANÁLISIS DE EMOCIONES
     // ============================================================
-
-    /// Revisa si todas las metas activas están completas.
-    /// Si es así, espera brevemente y avanza a la siguiente fase.
-    private func checkPhaseCompletion() {
-        // allSatisfy devuelve true solo si TODAS las metas están completadas
-        let allDone = activeGoals.allSatisfy { $0.isCompleted }
-        guard allDone else { return }
-
-        // Un pequeño delay permite que la UI muestre el último checkbox
-        // completado antes de que desaparezca la lista actual.
-        // EXTENSIBILIDAD: Muestra aquí una animación de "¡Fase completada!"
-        // usando el flag `isTransitioningPhase` en la vista.
-        isTransitioningPhase = true
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) { [weak self] in
-            guard let self = self else { return }
-            self.advanceToNextPhase()
-            self.isTransitioningPhase = false
+    
+    private func analyzeLastWeekEmotions(entries: [DiaryEntry], currentWeekStart: Date) -> [EmotionGroup] {
+        var groupCounts: [EmotionGroup: Int] = [:]
+        
+        // Filtrar entradas que pertenecen estrictamente a la semana anterior
+        let lastWeekEntries = entries.filter { entry in
+            entry.date < currentWeekStart && entry.date >= Calendar.current.date(byAdding: .day, value: -7, to: currentWeekStart)!
         }
+        
+        // Contar ocurrencias
+        for entry in lastWeekEntries {
+            for emotion in entry.emotions {
+                groupCounts[EmotionGroup.group(for: emotion), default: 0] += 1
+            }
+        }
+        
+        // Si no escribió nada la semana pasada, damos metas Universales y de Bienestar
+        if groupCounts.isEmpty {
+            return [.universal, .bienestar, .exploracion]
+        }
+        
+        // Ordenar grupos de mayor a menor frecuencia
+        let sortedGroups = groupCounts.sorted { $0.value > $1.value }.map { $0.key }
+        
+        // Devolver los top 3 (o menos si solo sintió 1 o 2 grupos)
+        return Array(sortedGroups.prefix(3))
     }
-
-    /// Avanza al número de fase siguiente y construye las nuevas metas.
-    private func advanceToNextPhase() {
-        let nextPhase = currentPhase + 1
-        buildGoals(forPhase: nextPhase)
-        // EXTENSIBILIDAD: Aquí puedes:
-        //   - Programar una notificación local de felicitación
-        //   - Agregar un logro al array `unlockedBadges`
-        //   - Llamar a un API para registrar el progreso
+    
+    // ============================================================
+    // MARK: - HELPERS
+    // ============================================================
+    
+    private func pickUnusedGoal(from group: EmotionGroup) -> GoalDefinition? {
+        guard let definitions = GoalSets.goalsByGroup[group] else { return nil }
+        
+        // Filtrar metas no usadas
+        let available = definitions.filter { !usedGoalTitles.contains($0.title) }
+        
+        // Si ya usó todas las de ese grupo, limpiamos el historial para rotar de nuevo
+        if available.isEmpty {
+            usedGoalTitles.removeAll { title in definitions.contains(where: { $0.title == title }) }
+            let refreshedAvailable = definitions.filter { !usedGoalTitles.contains($0.title) }
+            let picked = refreshedAvailable.randomElement()
+            if let picked = picked { usedGoalTitles.append(picked.title) }
+            return picked
+        }
+        
+        // Elegir una al azar
+        let picked = available.randomElement()!
+        usedGoalTitles.append(picked.title)
+        return picked
     }
-
-    // ============================================================
-    // MARK: - Personalización de metas (reemplazar fillers)
-    // ============================================================
-
-    /// Reemplaza una meta de tipo `.filler` con una meta creada por el usuario.
-    ///
-    /// - Parameters:
-    ///   - goalId:      ID de la meta filler a reemplazar.
-    ///   - title:       Título de la meta personalizada del usuario.
-    ///   - description: Descripción de la meta personalizada.
-    ///
-    /// La lógica de cuántos slots quedan es automática:
-    ///   - Si el usuario reemplaza los 2 fillers → quedan 0 fillers, 2 custom.
-    ///   - Si reemplaza 1 → queda 1 filler, 1 custom.
-    ///   - Si no reemplaza ninguno → quedan 2 fillers, 0 custom.
-    func replaceFillerWithCustomGoal(goalId: UUID, title: String, description: String) {
-        guard
-            let idx = activeGoals.firstIndex(where: { $0.id == goalId }),
-            activeGoals[idx].isCustomizable,           // Solo fillers reemplazables
-            activeGoals[idx].goalType == .filler       // Confirma que es un filler
-        else { return }
-
-        // Construye la nueva meta custom manteniendo el mismo orden visual
-        let customGoal = Goal(
-            phase:          activeGoals[idx].phase,
-            displayOrder:   activeGoals[idx].displayOrder,
-            title:          title,
-            description:    description,
-            goalType:       .custom,
-            isCustomizable: false  // Una vez personalizada, ya no se puede volver a cambiar
-                                   // EXTENSIBILIDAD: pon `true` si quieres permitir edición posterior
+    
+    private func createGoal(def: GoalDefinition, type: GoalType, isCustomizable: Bool, order: Int) -> Goal {
+        return Goal(
+            phase: 1, // La fase ya no importa tanto, el motor manda
+            displayOrder: order,
+            title: def.title,
+            description: def.description,
+            goalType: type,
+            isCustomizable: isCustomizable
         )
+    }
 
-        activeGoals[idx] = customGoal
-        saveState()
+    private func saveMetadata(weekStart: Date) {
+        lastGeneratedWeekStart = weekStart
+        let meta = GoalStorage.GoalMetadata(lastGeneratedWeekStart: weekStart, usedGoalTitles: usedGoalTitles)
+        GoalStorage.shared.saveMetadata(meta)
     }
 
     // ============================================================
-    // MARK: - Propiedades calculadas para la UI
+    // MÉTODOS DE LA UI (Conservados)
     // ============================================================
-
-    /// Número de metas completadas actualmente.
-    var completedCount: Int {
-        activeGoals.filter { $0.isCompleted }.count
-    }
-
-    /// Progreso de 0.0 a 1.0 para la barra de progreso.
-    var progressFraction: Double {
-        guard !activeGoals.isEmpty else { return 0 }
-        return Double(completedCount) / Double(activeGoals.count)
-    }
-
-    /// Número de slots que aún pueden ser personalizados por el usuario.
-    var remainingCustomSlots: Int {
-        activeGoals.filter { $0.goalType == .filler && $0.isCustomizable }.count
-    }
-
-    /// true si existe al menos un slot personalizable disponible.
-    var hasCustomizableSlots: Bool {
-        remainingCustomSlots > 0
-    }
-
-    // ============================================================
-    // MARK: - Persistencia
-    // ============================================================
-
-    /// Guarda el estado actual en disco.
-    /// Se llama después de cualquier cambio de estado.
-    private func saveState() {
+    
+    func toggleGoalCompletion(_ goal: Goal) {
+        guard let idx = activeGoals.firstIndex(where: { $0.id == goal.id }) else { return }
+        activeGoals[idx].isCompleted.toggle()
+        activeGoals[idx].completedDate = activeGoals[idx].isCompleted ? Date() : nil
         GoalStorage.shared.saveActiveGoals(activeGoals)
-        GoalStorage.shared.saveCurrentPhase(currentPhase)
     }
 
-    // ============================================================
-    // MARK: - Herramientas de desarrollo / Configuración
-    // ============================================================
-
-    /// Resetea TODAS las metas y vuelve a Fase 1.
-    /// Para activar: llámalo desde una pantalla de Configuración
-    /// con confirmación del usuario.
-    ///
-    /// ⚠️ DESTRUCTIVO: borra el progreso del usuario.
-    func resetAllGoals() {
-        GoalStorage.shared.deleteAllGoalData()
-        buildGoals(forPhase: 1)
+    func replaceFillerWithCustomGoal(goalId: UUID, title: String, description: String) {
+        guard let idx = activeGoals.firstIndex(where: { $0.id == goalId }), activeGoals[idx].isCustomizable else { return }
+        let customGoal = Goal(
+            phase: 1,
+            displayOrder: activeGoals[idx].displayOrder,
+            title: title,
+            description: description,
+            goalType: .custom,
+            isCustomizable: false
+        )
+        activeGoals[idx] = customGoal
+        GoalStorage.shared.saveActiveGoals(activeGoals)
     }
+    
+    var completedCount: Int { activeGoals.filter { $0.isCompleted }.count }
+    var progressFraction: Double { activeGoals.isEmpty ? 0 : Double(completedCount) / Double(activeGoals.count) }
+    var remainingCustomSlots: Int { activeGoals.filter { $0.goalType == .filler && $0.isCustomizable }.count }
+    var hasCustomizableSlots: Bool { remainingCustomSlots > 0 }
+    
+    // NOTA: isTransitioningPhase y currentPhase se pueden borrar o mantener para evitar romper vistas,
+    // pero ya no son necesarios en el motor principal.
+    @Published var isTransitioningPhase: Bool = false
+    @Published var currentPhase: Int = 1
 }
+

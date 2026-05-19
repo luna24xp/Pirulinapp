@@ -149,7 +149,7 @@ struct AddCustomGoalSheet: View {
                 .cornerRadius(10)
                 .focused($isTitleFocused)
                 // Limitar a maxTitleLength caracteres
-                .onChange(of: titleText) { newValue in
+                .onChange(of: titleText) { oldValue, newValue in
                     if newValue.count > maxTitleLength {
                         titleText = String(newValue.prefix(maxTitleLength))
                     }
@@ -196,7 +196,7 @@ struct AddCustomGoalSheet: View {
                     .padding(8)
                     .scrollContentBackground(.hidden)
                     .background(Color.clear)
-                    .onChange(of: descriptionText) { newValue in
+                    .onChange(of: descriptionText) { oldValue, newValue in
                         if newValue.count > maxDescLength {
                             descriptionText = String(newValue.prefix(maxDescLength))
                         }

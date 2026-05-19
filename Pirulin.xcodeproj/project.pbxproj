@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD5D30BD2FBABE7B00828BCF /* EmotionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5D30BC2FBABE7B00828BCF /* EmotionGroup.swift */; };
+		BD6BB93F2FB2BF3400680784 /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6BB93E2FB2BF3400680784 /* OnboardingPage.swift */; };
+		BD6BB9442FB2BF7600680784 /* OnboardingContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6BB9412FB2BF7600680784 /* OnboardingContent.swift */; };
+		BD6BB9452FB2BF7600680784 /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6BB9422FB2BF7600680784 /* OnboardingPageView.swift */; };
+		BD6BB9462FB2BF7600680784 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6BB9432FB2BF7600680784 /* OnboardingView.swift */; };
 		BDB44AE12FB0CC04003687CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDB44ADE2FB0CC04003687CD /* Assets.xcassets */; };
 		BDB44AED2FB127DA003687CD /* DiaryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44AEC2FB127DA003687CD /* DiaryApp.swift */; };
 		BDB44B242FB12D89003687CD /* DiaryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B222FB12D89003687CD /* DiaryEntry.swift */; };
@@ -18,13 +23,24 @@
 		BDB44B322FB12E0E003687CD /* EmotionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B2C2FB12E0E003687CD /* EmotionPickerView.swift */; };
 		BDB44B332FB12E0E003687CD /* EntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B2D2FB12E0E003687CD /* EntryDetailView.swift */; };
 		BDB44B342FB12E0E003687CD /* NewEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B2E2FB12E0E003687CD /* NewEntryView.swift */; };
-		BDB44B372FB12E28003687CD /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B362FB12E28003687CD /* JournalListView.swift */; };
 		BDB44B3A2FB12E42003687CD /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B392FB12E42003687CD /* GalleryView.swift */; };
 		BDB44B3C2FB12E78003687CD /* DiaryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B3B2FB12E78003687CD /* DiaryStorage.swift */; };
 		BDB44B3E2FB12E81003687CD /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB44B3D2FB12E81003687CD /* ImageManager.swift */; };
+		BDCC05BD2FB4035A0067C219 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC05BC2FB4035A0067C219 /* Goal.swift */; };
+		BDCC05BF2FB4037E0067C219 /* GoalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC05BE2FB4037E0067C219 /* GoalStorage.swift */; };
+		BDCC05C12FB4038A0067C219 /* GoalsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC05C02FB4038A0067C219 /* GoalsViewModel.swift */; };
+		BDCC05C52FB403C00067C219 /* AddCustomGoalSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC05C32FB403C00067C219 /* AddCustomGoalSheet.swift */; };
+		BDCC05C62FB403C00067C219 /* GoalsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC05C42FB403C00067C219 /* GoalsSectionView.swift */; };
+		BDCC05C82FB403D10067C219 /* JournalListView 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC05C72FB403D10067C219 /* JournalListView 2.swift */; };
+		BDCC05CB2FB404240067C219 /* GoalSets.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC05CA2FB404240067C219 /* GoalSets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BD5D30BC2FBABE7B00828BCF /* EmotionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionGroup.swift; sourceTree = "<group>"; };
+		BD6BB93E2FB2BF3400680784 /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
+		BD6BB9412FB2BF7600680784 /* OnboardingContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingContent.swift; sourceTree = "<group>"; };
+		BD6BB9422FB2BF7600680784 /* OnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageView.swift; sourceTree = "<group>"; };
+		BD6BB9432FB2BF7600680784 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		BD86D55D2FAE556D007A8E39 /* Pirulin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pirulin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDB44ADE2FB0CC04003687CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BDB44AEC2FB127DA003687CD /* DiaryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryApp.swift; sourceTree = "<group>"; };
@@ -37,10 +53,16 @@
 		BDB44B2D2FB12E0E003687CD /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
 		BDB44B2E2FB12E0E003687CD /* NewEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEntryView.swift; sourceTree = "<group>"; };
 		BDB44B2F2FB12E0E003687CD /* WriteTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteTextView.swift; sourceTree = "<group>"; };
-		BDB44B362FB12E28003687CD /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
 		BDB44B392FB12E42003687CD /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
 		BDB44B3B2FB12E78003687CD /* DiaryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryStorage.swift; sourceTree = "<group>"; };
 		BDB44B3D2FB12E81003687CD /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
+		BDCC05BC2FB4035A0067C219 /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
+		BDCC05BE2FB4037E0067C219 /* GoalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalStorage.swift; sourceTree = "<group>"; };
+		BDCC05C02FB4038A0067C219 /* GoalsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsViewModel.swift; sourceTree = "<group>"; };
+		BDCC05C32FB403C00067C219 /* AddCustomGoalSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomGoalSheet.swift; sourceTree = "<group>"; };
+		BDCC05C42FB403C00067C219 /* GoalsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsSectionView.swift; sourceTree = "<group>"; };
+		BDCC05C72FB403D10067C219 /* JournalListView 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JournalListView 2.swift"; sourceTree = "<group>"; };
+		BDCC05CA2FB404240067C219 /* GoalSets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,9 +76,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD6BB9402FB2BF4A00680784 /* OnBoarding */ = {
+			isa = PBXGroup;
+			children = (
+				BD6BB9412FB2BF7600680784 /* OnboardingContent.swift */,
+				BD6BB9422FB2BF7600680784 /* OnboardingPageView.swift */,
+				BD6BB9432FB2BF7600680784 /* OnboardingView.swift */,
+			);
+			path = OnBoarding;
+			sourceTree = "<group>";
+		};
 		BD86D5542FAE556D007A8E39 = {
 			isa = PBXGroup;
 			children = (
+				BDCC05C92FB404110067C219 /* Goals */,
 				BDB44B212FB12D5E003687CD /* Utilities */,
 				BDB44B202FB12D51003687CD /* Storage */,
 				BDB44B1F2FB12D49003687CD /* Views */,
@@ -81,6 +114,9 @@
 			children = (
 				BDB44B222FB12D89003687CD /* DiaryEntry.swift */,
 				BDB44B232FB12D89003687CD /* Emotion.swift */,
+				BD6BB93E2FB2BF3400680784 /* OnboardingPage.swift */,
+				BDCC05BC2FB4035A0067C219 /* Goal.swift */,
+				BD5D30BC2FBABE7B00828BCF /* EmotionGroup.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -89,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				BDB44B262FB12DA9003687CD /* DiaryViewModel.swift */,
+				BDCC05C02FB4038A0067C219 /* GoalsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -96,6 +133,8 @@
 		BDB44B1F2FB12D49003687CD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BDCC05C22FB4039D0067C219 /* Goals */,
+				BD6BB9402FB2BF4A00680784 /* OnBoarding */,
 				BDB44B382FB12E30003687CD /* Gallery */,
 				BDB44B352FB12E11003687CD /* Journal */,
 				BDB44B2A2FB12DD0003687CD /* Diary */,
@@ -108,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				BDB44B3B2FB12E78003687CD /* DiaryStorage.swift */,
+				BDCC05BE2FB4037E0067C219 /* GoalStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -135,7 +175,7 @@
 		BDB44B352FB12E11003687CD /* Journal */ = {
 			isa = PBXGroup;
 			children = (
-				BDB44B362FB12E28003687CD /* JournalListView.swift */,
+				BDCC05C72FB403D10067C219 /* JournalListView 2.swift */,
 			);
 			path = Journal;
 			sourceTree = "<group>";
@@ -146,6 +186,23 @@
 				BDB44B392FB12E42003687CD /* GalleryView.swift */,
 			);
 			path = Gallery;
+			sourceTree = "<group>";
+		};
+		BDCC05C22FB4039D0067C219 /* Goals */ = {
+			isa = PBXGroup;
+			children = (
+				BDCC05C32FB403C00067C219 /* AddCustomGoalSheet.swift */,
+				BDCC05C42FB403C00067C219 /* GoalsSectionView.swift */,
+			);
+			path = Goals;
+			sourceTree = "<group>";
+		};
+		BDCC05C92FB404110067C219 /* Goals */ = {
+			isa = PBXGroup;
+			children = (
+				BDCC05CA2FB404240067C219 /* GoalSets.swift */,
+			);
+			path = Goals;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,6 +277,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDCC05BF2FB4037E0067C219 /* GoalStorage.swift in Sources */,
 				BDB44B272FB12DA9003687CD /* DiaryViewModel.swift in Sources */,
 				BDB44AED2FB127DA003687CD /* DiaryApp.swift in Sources */,
 				BDB44B242FB12D89003687CD /* DiaryEntry.swift in Sources */,
@@ -227,13 +285,23 @@
 				BDB44B292FB12DBB003687CD /* MainTabView.swift in Sources */,
 				BDB44B3C2FB12E78003687CD /* DiaryStorage.swift in Sources */,
 				BDB44B302FB12E0E003687CD /* WriteTextView.swift in Sources */,
-				BDB44B372FB12E28003687CD /* JournalListView.swift in Sources */,
 				BDB44B3A2FB12E42003687CD /* GalleryView.swift in Sources */,
+				BDCC05C52FB403C00067C219 /* AddCustomGoalSheet.swift in Sources */,
+				BDCC05CB2FB404240067C219 /* GoalSets.swift in Sources */,
+				BDCC05C62FB403C00067C219 /* GoalsSectionView.swift in Sources */,
 				BDB44B3E2FB12E81003687CD /* ImageManager.swift in Sources */,
+				BD5D30BD2FBABE7B00828BCF /* EmotionGroup.swift in Sources */,
+				BDCC05C12FB4038A0067C219 /* GoalsViewModel.swift in Sources */,
+				BDCC05C82FB403D10067C219 /* JournalListView 2.swift in Sources */,
 				BDB44B312FB12E0E003687CD /* AddImagesView.swift in Sources */,
+				BD6BB9442FB2BF7600680784 /* OnboardingContent.swift in Sources */,
+				BD6BB9452FB2BF7600680784 /* OnboardingPageView.swift in Sources */,
+				BD6BB9462FB2BF7600680784 /* OnboardingView.swift in Sources */,
+				BDCC05BD2FB4035A0067C219 /* Goal.swift in Sources */,
 				BDB44B322FB12E0E003687CD /* EmotionPickerView.swift in Sources */,
 				BDB44B332FB12E0E003687CD /* EntryDetailView.swift in Sources */,
 				BDB44B342FB12E0E003687CD /* NewEntryView.swift in Sources */,
+				BD6BB93F2FB2BF3400680784 /* OnboardingPage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,6 +427,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RM85R68T55;
@@ -383,6 +452,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.estudiante.Pirulin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -402,6 +472,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RM85R68T55;
@@ -426,6 +497,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.estudiante.Pirulin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
